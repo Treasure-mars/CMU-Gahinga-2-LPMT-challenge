@@ -1,6 +1,6 @@
 # CMU-Gahinga-2-LPMT-challenge
-##Module / Week 1: Solution Design & User Management: Week 1
-#During this week
+## Module / Week 1: Solution Design & User Management: Week 1
+# During this week
 1. The Team of students needs to understand the problem and agree on steps to solve it,
 any misunderstanding should be addressed to the TAs. Ensure you are making no
 assumptions.
@@ -71,7 +71,7 @@ Attributes
 4. If they are on ART drugs
 5. If yes, the time they started the ART
 6. Country of residence (ISO)
-#What to use Bash for
+# What to use Bash for
 1. Create a text file to store users (e.g., user-store.txt) that has an initial admin.
 This is the same file that the user will be updating every time they update their
 information.
