@@ -30,7 +30,7 @@ public class Admin extends User {
     }
 
     public void exportUserData() {
-        String csvFile = "user_data.csv";
+        String csvFile = "/home/tresor/Desktop/CMU-Gahinga-2-LPMT-challenge/src/Storage/user_data.csv";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
             writer.write("UUID,Email,FirstName,LastName,DateOfBirth,IsHivPositive,DateOfInfection,OnARTDrugs,StartARTDate,Country,LifeExpectancy");
             writer.newLine();
@@ -63,7 +63,7 @@ public class Admin extends User {
     }
 
     public void aggregateUserData() {
-        String csvFile = "user_data_aggregated.csv";
+        String csvFile = "/home/tresor/Desktop/CMU-Gahinga-2-LPMT-challenge/src/Storage/user_data_aggregated.csv";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
             writer.write("UUID,Email,FirstName,LastName,DateOfBirth,IsHivPositive,DateOfInfection,OnARTDrugs,StartARTDate,Country,LifeExpectancy");
             writer.newLine();
