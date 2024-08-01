@@ -1,0 +1,2 @@
+admin@example.com,,240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9,ADMIN,true
+nsabitre@gmail.com,430ccbd8-2ee6-4e0a-b941-c5da7316407e,9345a35a6fdf174dff7219282a3ae4879790dbb785c70f6fff91e32fafd66eab,PATIENT,true

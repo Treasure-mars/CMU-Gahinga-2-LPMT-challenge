@@ -2,7 +2,10 @@ package View;
 
 import Model.*;
 
+import java.io.BufferedReader;
 import java.io.Console;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.Date;
 import java.text.ParseException;
@@ -17,29 +20,27 @@ public class Test {
         while (true) {
             clearScreen();
             System.out.println("Welcome to the Health Management System");
-            System.out.println("1. Register as Admin");
-            System.out.println("2. Register as Patient");
-            System.out.println("3. Login as Admin");
-            System.out.println("4. Login as Patient");
-            System.out.println("5. Exit");
+            System.out.println("1. Log in");
+            System.out.println("2. Complete Registration");
+            System.out.println("3. Exit");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
 
             switch (choice) {
                 case 1:
-                    registerAdmin();
+                    if (login()) {
+                        if (currentAdmin != null) {
+                            adminMenu();
+                        } else if (currentPatient != null) {
+                            patientMenu();
+                        }
+                    }
                     break;
                 case 2:
                     registerPatient();
                     break;
                 case 3:
-                    loginAdmin();
-                    break;
-                case 4:
-                    loginPatient();
-                    break;
-                case 5:
                     System.out.println("Exiting...");
                     System.exit(0);
                     break;
@@ -49,20 +50,30 @@ public class Test {
         }
     }
 
-    private static void registerAdmin() {
+    private static boolean login() {
         clearScreen();
-        System.out.println("Register as Admin");
-        System.out.print("First Name: ");
-        String firstName = scanner.nextLine();
-        System.out.print("Last Name: ");
-        String lastName = scanner.nextLine();
+        System.out.println("Log in to the Health Management System");
         System.out.print("Email: ");
         String email = scanner.nextLine();
         String password = readPassword("Password: ");
 
-        currentAdmin = new Admin(firstName, lastName, email, password);
-        System.out.println("Admin registered successfully!");
-        pressEnterToContinue();
+        String scriptPath = "/home/tresor/Desktop/CMU-Gahinga-2-LPMT-challenge/src/Bash/user-manager.sh";
+        String response = executeScript(scriptPath, "login", email, password);
+
+        // Check if the user is an admin or patient
+        if (response.startsWith("ADMIN")) {
+            currentAdmin = new Admin("", "", email, "");
+            return true;
+        } else if (response.startsWith("PATIENT")) {
+            String[] parts = response.split(",");
+            String storedUuid = parts[1];
+            currentPatient = new Patient(storedUuid, "", "", email, "", null, false, null, false, null, "", null, 0);
+            return true;
+        } else {
+            System.out.println("Invalid email or password.");
+            pressEnterToContinue();
+            return false;
+        }
     }
 
     private static void registerPatient() {
@@ -72,46 +83,49 @@ public class Test {
         String firstName = scanner.nextLine();
         System.out.print("Last Name: ");
         String lastName = scanner.nextLine();
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
         String password = readPassword("Password: ");
-
+    
         System.out.print("Date of Birth (yyyy-MM-dd): ");
         Date dateOfBirth = parseDate(scanner.nextLine());
-
+    
         System.out.print("Is HIV Positive (true/false): ");
         boolean isHivPositive = scanner.nextBoolean();
         scanner.nextLine(); // consume newline
-
+    
         Date dateOfInfection = null;
         if (isHivPositive) {
             System.out.print("Date of Infection (yyyy-MM-dd): ");
             dateOfInfection = parseDate(scanner.nextLine());
         }
-
+    
         System.out.print("On ART Drugs (true/false): ");
         boolean onARTDrugs = scanner.nextBoolean();
         scanner.nextLine(); // consume newline
-
+    
         Date startARTDate = null;
         if (onARTDrugs) {
             System.out.print("Start ART Date (yyyy-MM-dd): ");
             startARTDate = parseDate(scanner.nextLine());
         }
-
+    
         System.out.print("Country: ");
         String country = scanner.nextLine();
-
+    
         System.out.print("Life Expectancy: ");
         int lifeExpectancy = scanner.nextInt();
         scanner.nextLine(); // consume newline
-
-        currentPatient = new Patient(firstName, lastName, email, password, dateOfBirth, isHivPositive,
+    
+        System.out.print("Enter UUID Code: ");
+        String uuid_code = scanner.nextLine(); // Ensure this captures the correct input
+    
+        currentPatient = new Patient(uuid_code, firstName, lastName, null, password, dateOfBirth, isHivPositive,
                 dateOfInfection, onARTDrugs, startARTDate, country, null, lifeExpectancy);
-
-        System.out.println("Patient registered successfully!");
+    
+        String response = currentPatient.completeRegistration();
+    
+        System.out.println(response);
         pressEnterToContinue();
-    }
+    }    
 
     private static Date parseDate(String date) {
         try {
@@ -119,36 +133,6 @@ public class Test {
         } catch (ParseException e) {
             System.out.println("Invalid date format. Please enter in yyyy-MM-dd format.");
             return null;
-        }
-    }
-
-    private static void loginAdmin() {
-        clearScreen();
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        String password = readPassword("Password: ");
-
-        if (currentAdmin != null && currentAdmin.login(email, password)) {
-            System.out.println("Admin login successful!");
-            adminMenu();
-        } else {
-            System.out.println("Invalid email or password.");
-            pressEnterToContinue();
-        }
-    }
-
-    private static void loginPatient() {
-        clearScreen();
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        String password = readPassword("Password: ");
-
-        if (currentPatient != null && currentPatient.login(email, password)) {
-            System.out.println("Patient login successful!");
-            patientMenu();
-        } else {
-            System.out.println("Invalid email or password.");
-            pressEnterToContinue();
         }
     }
 
@@ -177,12 +161,15 @@ public class Test {
                     currentAdmin.aggregateUserData();
                     break;
                 case 4:
-                    currentAdmin.initiateRegistration();
+                    clearScreen();
+                    currentAdmin.initiateRegistration("ADMIN");
+                    pressEnterToContinue();
                     break;
                 case 5:
                     currentAdmin.getAllUsers();
                     break;
                 case 6:
+                    currentAdmin = null;
                     return;
                 default:
                     System.out.println("Invalid choice, please try again.");
@@ -206,14 +193,18 @@ public class Test {
             switch (choice) {
                 case 1:
                     currentPatient.modifyProfile();
+                    pressEnterToContinue();
                     break;
                 case 2:
                     currentPatient.viewProfile();
+                    pressEnterToContinue();
                     break;
                 case 3:
                     currentPatient.computeLifeExpectancy();
+                    pressEnterToContinue();
                     break;
                 case 4:
+                    currentPatient = null;
                     return;
                 default:
                     System.out.println("Invalid choice, please try again.");
@@ -241,5 +232,39 @@ public class Test {
     private static void pressEnterToContinue() {
         System.out.println("Press Enter to continue...");
         scanner.nextLine();
+    }
+
+    public static String executeScript(String... command) {
+        StringBuilder response = new StringBuilder();
+        ProcessBuilder processBuilder = new ProcessBuilder(command);
+        
+        try {
+            Process process = processBuilder.start();
+            
+            // Capture output from the script
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line).append(System.lineSeparator());
+            }
+
+            // Capture any errors from the script
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String errorLine;
+            while ((errorLine = errorReader.readLine()) != null) {
+                System.err.println("Error: " + errorLine);
+            }
+
+            // Wait for the script to finish
+            int exitCode = process.waitFor();
+            if (exitCode != 0) {
+                System.err.println("Script exited with error code: " + exitCode);
+            }
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        return response.toString().trim(); // Trim to remove any trailing new lines
     }
 }
