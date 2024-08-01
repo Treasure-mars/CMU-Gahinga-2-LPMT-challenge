@@ -57,7 +57,7 @@ public class Main {
         String email = scanner.nextLine();
         String password = readPassword("Password: ");
 
-        String scriptPath = "/Bash/user-manager.sh";
+        String scriptPath = "../Bash/user-manager.sh";
         String response = executeScript(scriptPath, "login", email, password);
 
         // Check if the user is an admin or patient
