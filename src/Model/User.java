@@ -45,7 +45,7 @@ public abstract class User {
 
     // Abstract methods for polymorphism
     public String login(){
-        String scriptPath = "/home/tresor/Desktop/CMU-Gahinga-2-LPMT-challenge/src/Bash/user-manager.sh";
+        String scriptPath = "../Bash/user-manager.sh";
         String response = executeScript(scriptPath, "login", email, password);
         return response;
     }

@@ -63,7 +63,7 @@ public class Patient extends User {
     }
 
     public void viewProfile() {
-        String scriptPath = "/home/tresor/Desktop/CMU-Gahinga-2-LPMT-challenge/src/Bash/user-manager.sh";
+        String scriptPath = "../Bash/user-manager.sh";
         String response = executeScript(scriptPath, "view-profile", uuid);
         System.out.println(response);
     }
@@ -78,7 +78,7 @@ public class Patient extends User {
     }
 
     public String completeRegistration() {
-        String scriptPath = "/home/tresor/Desktop/CMU-Gahinga-2-LPMT-challenge/src/Bash/user-manager.sh";
+        String scriptPath = "../Bash/user-manager.sh";
         String response = executeScript(scriptPath, "complete-registration", uuid, getFirstName(), getLastName(), dateOfBirth.toString(), String.valueOf(isHivPositive), dateOfInfection != null ? dateOfInfection.toString() : "", String.valueOf(onARTDrugs), startARTDate != null ? startARTDate.toString() : "", country, getPassword());
         return response;
     }
