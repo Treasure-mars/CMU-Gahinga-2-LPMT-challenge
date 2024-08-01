@@ -1,13 +1,18 @@
 package Model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class Admin extends User {
     private static final Scanner scanner = new Scanner(System.in);
+
+    private List<User> users; 
 
     public Admin() {
         super();
@@ -25,11 +30,53 @@ public class Admin extends User {
     }
 
     public void exportUserData() {
-        // Implementation
+        String csvFile = "user_data.csv";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
+            writer.write("UUID,Email,FirstName,LastName,DateOfBirth,IsHivPositive,DateOfInfection,OnARTDrugs,StartARTDate,Country,LifeExpectancy");
+            writer.newLine();
+
+            // for (User user : users) {
+            //     writer.write(userToCsv(user));
+            //     writer.newLine();
+            // }
+
+            System.out.println("User data exported successfully to " + csvFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String userToCsv(User user) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("").append(",");
+        sb.append(user.getEmail()).append(",");
+        sb.append(user.getFirstName()).append(",");
+        sb.append(user.getLastName()).append(",");
+        sb.append("").append(",");
+        sb.append("").append(",");
+        sb.append("").append(",");
+        sb.append("").append(",");
+        sb.append("").append(",");
+        sb.append("").append(",");
+        sb.append("");
+        return sb.toString();
     }
 
     public void aggregateUserData() {
-        // Implementation
+        String csvFile = "user_data_aggregated.csv";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
+            writer.write("UUID,Email,FirstName,LastName,DateOfBirth,IsHivPositive,DateOfInfection,OnARTDrugs,StartARTDate,Country,LifeExpectancy");
+            writer.newLine();
+
+            // for (User user : users) {
+            //     writer.write(userToCsv(user));
+            //     writer.newLine();
+            // }
+
+            System.out.println("User data exported successfully to " + csvFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

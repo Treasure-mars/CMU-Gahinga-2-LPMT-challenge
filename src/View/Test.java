@@ -156,9 +156,11 @@ public class Test {
                     break;
                 case 2:
                     currentAdmin.exportUserData();
+                    pressEnterToContinue();
                     break;
                 case 3:
                     currentAdmin.aggregateUserData();
+                    pressEnterToContinue();
                     break;
                 case 4:
                     clearScreen();
