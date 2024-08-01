@@ -11,7 +11,7 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class Test {
+public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static Admin currentAdmin = null;
     private static Patient currentPatient = null;
@@ -57,7 +57,7 @@ public class Test {
         String email = scanner.nextLine();
         String password = readPassword("Password: ");
 
-        String scriptPath = "/home/tresor/Desktop/CMU-Gahinga-2-LPMT-challenge/src/Bash/user-manager.sh";
+        String scriptPath = "../Bash/user-manager.sh";
         String response = executeScript(scriptPath, "login", email, password);
 
         // Check if the user is an admin or patient

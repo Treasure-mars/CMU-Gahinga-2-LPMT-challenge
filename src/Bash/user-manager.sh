@@ -1,7 +1,7 @@
 #!/bin/bash
 
-USER_STORE="/home/tresor/Desktop/CMU-Gahinga-2-LPMT-challenge/src/Storage/user-store.txt"
-PATIENTS_STORE="/home/tresor/Desktop/CMU-Gahinga-2-LPMT-challenge/src/Storage/patients-store.txt"
+USER_STORE="../Storage/user-store.txt"
+PATIENTS_STORE="../Storage/patients-store.txt"
 INITIAL_ADMIN_EMAIL="admin@example.com"
 INITIAL_ADMIN_PASSWORD="admin123"
 
